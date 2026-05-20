@@ -17,6 +17,7 @@ show_menu() {
   echo "5) poetry run ruff check src/  # Lint with ruff"
   echo "6) poetry shell           # Activate Poetry shell"
   echo "7) poetry run <cmd>       # Run custom command"
+  echo "8) Safe commit flow       # add + pre-commit + add + commit"
   echo "0) Exit"
 }
 
@@ -31,6 +32,17 @@ while true; do
     5) poetry run ruff check src/ ;;
     6) poetry shell ;;
     7) read -p "Enter the command after 'poetry run ': " cmd; poetry run $cmd ;;
+    8)
+      read -p "Enter commit message: " commit_msg
+      if [[ -z "$commit_msg" ]]; then
+        echo "Commit message cannot be empty."
+      else
+        git add -A
+        poetry run pre-commit run --all-files
+        git add -A
+        git commit -m "$commit_msg"
+      fi
+      ;;
     0) echo "Exiting."; exit 0 ;;
     *) echo "Invalid option." ;;
   esac

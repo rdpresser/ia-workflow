@@ -88,6 +88,14 @@ To use the helper script for common project commands:
 
 This script provides a menu to run Poetry commands for installing dependencies, running tests, linting, type checking, and more.
 You can also run custom commands using the menu option.
+It also includes a safe commit flow that runs:
+
+- `git add -A`
+- `poetry run pre-commit run --all-files`
+- `git add -A`
+- `git commit -m "<message>"`
+
+Use menu option `8` in `./scripts/helper.sh` to execute this sequence automatically.
 If you see `Permission denied`, ensure you have set the executable permission as above.
 
 Each command should be run from the project root. For more, see the [Poetry documentation](https://python-poetry.org/docs/).
