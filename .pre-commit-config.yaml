@@ -5,17 +5,16 @@ repos:
       - id: ruff
         args: [ --fix ]
       - id: ruff-format
-  # NOTE: MyPy is disabled in pre-commit due to src-layout namespace resolution issues.
-  # Run manually: poetry run mypy src/ai_taskflow/ --explicit-package-bases
-  # This will be re-enabled after resolving the namespace package conflict.
-  # - repo: https://github.com/pre-commit/mirrors-mypy
-  #   rev: v2.1.0
-  #   hooks:
-  #     - id: mypy
-  #       files: ^src/ai_taskflow/
-  #       args: [--explicit-package-bases]
-  #       additional_dependencies:
-  #         - pydantic>=2.0.0
-  #         - pydantic-settings>=2.0.0
-  #         - types-requests
-  #         - types-redis
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v2.1.0
+    hooks:
+      - id: mypy
+        files: ^src/ai_taskflow/
+        pass_filenames: false
+        args: [--explicit-package-bases, src/ai_taskflow]
+        additional_dependencies:
+          - pydantic>=2.0.0
+          - pydantic-settings>=2.0.0
+          - types-requests
+          - types-redis
+          - sqlalchemy>=2.0.49
