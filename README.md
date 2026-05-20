@@ -1,3 +1,59 @@
+## MyPy Type Checking
+
+**Current Status:** MyPy is currently disabled in the pre-commit hook due to a namespace resolution issue with the `src/`-layout package structure.
+
+**Individual File Type Checking:**
+MyPy works correctly when checking individual files:
+
+```bash
+poetry run mypy src/ai_taskflow/core/config.py --explicit-package-bases
+```
+
+**Check All Files:**
+To run MyPy on the entire codebase, use menu option `10` in the helper script:
+
+```bash
+./scripts/helper.sh  # Select option 10
+```
+
+This runs MyPy on each Python file individually to work around the namespace detection issue.
+
+**Re-enabling in Pre-commit:**
+This issue will be resolved in a future update to support full pre-commit integration. Until then, we recommend:
+- Using the manual mypy options above during development
+- Running the safe commit flow (option 8) which still enforces Ruff linting
+
+Use menu option `9` in `./scripts/helper.sh` to install or repair Git hooks (`pre-commit install --install-hooks`).
+If you see `Permission denied`, ensure you have set the executable permission as above.
+If you see `Permission denied`, ensure you have set the executable permission as above.
+
+## MyPy Type Checking
+
+**Current Status:** MyPy is currently disabled in the pre-commit hook due to a namespace resolution issue with the `src/`-layout package structure.
+
+**Individual File Type Checking:**
+MyPy works correctly when checking individual files:
+
+```bash
+poetry run mypy src/ai_taskflow/core/config.py --explicit-package-bases
+```
+
+**Check All Files:**
+To run MyPy on the entire codebase, use menu option `10` in the helper script:
+
+```bash
+./scripts/helper.sh  # Select option 10
+```
+
+This runs MyPy on each Python file individually to work around the namespace detection issue.
+
+**Re-enabling in Pre-commit:**
+This issue will be resolved in a future update to support full pre-commit integration. Until then, we recommend:
+- Using the manual mypy options above during development
+- Running the safe commit flow (option 8) which still enforces Ruff linting
+
+Use menu option `9` in `./scripts/helper.sh` to install or repair Git hooks (`pre-commit install --install-hooks`).
+If you see `Permission denied`, ensure you have set the executable permission as above.
 # AI Taskflow
 
 AI Taskflow is a study-focused Python model project.
@@ -91,6 +147,32 @@ You can also run custom commands using the menu option.
 It also includes a safe commit flow that runs:
 
 - `git add -A`
+- `git add -A`
+
+## MyPy Type Checking
+
+**Current Status:** MyPy is currently disabled in the pre-commit hook due to a namespace resolution issue with the `src/`-layout package structure.
+
+**Individual File Type Checking:**
+MyPy works correctly when checking individual files:
+
+```bash
+poetry run mypy src/ai_taskflow/core/config.py --explicit-package-bases
+```
+
+**Check All Files:**
+To run MyPy on the entire codebase, use menu option `10` in the helper script:
+
+```bash
+./scripts/helper.sh  # Select option 10
+```
+
+This runs MyPy on each Python file individually to work around the namespace detection issue.
+
+**Re-enabling in Pre-commit:**
+This issue will be resolved in a future update to support full pre-commit integration. Until then, we recommend:
+- Using the manual mypy options above during development
+- Running the safe commit flow (option 8) which still enforces Ruff linting
 - `poetry run pre-commit run --all-files`
 - `git add -A`
 - `git commit -m "<message>"`

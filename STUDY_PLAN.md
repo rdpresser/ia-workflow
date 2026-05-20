@@ -197,10 +197,16 @@ What was established:
 - Poetry for dependency and environment management.
 - Ruff for linting and formatting.
 - MyPy for static type checking.
+- MyPy for static type checking (manual checks; disabled in pre-commit due to src-layout namespace issue).
 - Pre-commit for local quality gates.
 - The initial Docker Compose base for local services.
 
 What this phase teaches:
+
+**Note on MyPy Pre-commit Integration:**
+MyPy is currently run manually due to a namespace resolution issue with the `src/`-layout structure.
+Individual files pass validation correctly. See README.md for MyPy usage instructions and helper script option 10 for batch checking.
+This will be resolved in a future update to restore full pre-commit integration.
 
 - Reproducible project setup.
 - Quality gates before commit and before CI.
