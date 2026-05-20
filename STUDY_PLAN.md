@@ -65,7 +65,10 @@ Together they play the role of EF Core plus migrations.
 ### PostgreSQL and psycopg2-binary
 
 PostgreSQL stores the task records and final AI outputs.
-psycopg2-binary provides the PostgreSQL driver for synchronous access paths.
+psycopg2-binary provides the PostgreSQL driver for synchronous tooling paths such as Alembic CLI migrations.
+asyncpg provides the asynchronous PostgreSQL driver for the FastAPI runtime and SQLAlchemy Async sessions.
+
+The connection URL for the async application path should use the `postgresql+asyncpg://` prefix.
 
 ### Redis
 
@@ -74,6 +77,11 @@ Redis is used for low-latency state, especially rate limiting and temporary oper
 ### PyJWT
 
 PyJWT handles token generation and validation for protected endpoints.
+
+### Pydantic and pydantic-settings
+
+Pydantic provides typed data contracts, validation models, and structured AI output schemas.
+pydantic-settings provides typed application configuration from environment variables.
 
 ### Requests
 
@@ -121,7 +129,8 @@ ai-taskflow/
 │   ├── models/
 │   │   └── task.py
 │   ├── schemas/
-│   │   └── task.py
+│   │   ├── task.py
+│   │   └── ai.py
 │   ├── api/
 │   │   ├── deps.py
 │   │   └── v1/
@@ -194,7 +203,9 @@ Purpose:
 Key tasks:
 
 - Implement typed application settings in `src/core/config.py`.
+- Use `pydantic-settings` to load environment variables safely and explicitly.
 - Configure the async SQLAlchemy engine and session factory in `src/core/database.py`.
+- Use the `postgresql+asyncpg://` connection string for the async runtime path.
 - Initialize Alembic and create the first database migration.
 - Implement JWT encode and decode helpers in `src/core/security.py`.
 - Add FastAPI dependency helpers in `src/api/deps.py`.
@@ -288,7 +299,8 @@ Key tasks:
 - Configure LangChain in `src/worker/ai_engine.py`.
 - Support both `ChatOpenAI` and `ChatAnthropic`.
 - Create prompt templates that adapt to the task type.
-- Enforce structured output so the worker writes predictable results.
+- Define a Pydantic response contract for the AI output in `src/schemas/ai.py`.
+- Enforce structured output with `with_structured_output()` so the worker writes predictable results.
 - Update the task status to `COMPLETED` after the AI response is saved.
 
 Worker flow:
