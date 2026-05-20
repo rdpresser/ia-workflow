@@ -1,0 +1,52 @@
+[project]
+name = "ai-taskflow"
+version = "0.1.0"
+description = "PoC project to study Python"
+authors = [
+    {name = "Rodrigo Presser"}
+]
+license = "MIT"
+requires-python = ">=3.14,<4.0"
+dependencies = [
+    "fastapi (>=0.136.1,<0.137.0)",
+    "uvicorn (>=0.47.0,<0.48.0)",
+    "sqlalchemy (>=2.0.49,<3.0.0)",
+    "alembic (>=1.18.4,<2.0.0)",
+    "psycopg2-binary (>=2.9.12,<3.0.0)",
+    "redis (>=7.4.0,<8.0.0)",
+    "pyjwt (>=2.12.1,<3.0.0)",
+    "requests (>=2.34.2,<3.0.0)",
+    "google-cloud-pubsub (>=2.38.0,<3.0.0)",
+    "langchain (>=1.3.1,<2.0.0)",
+    "langchain-openai (>=1.2.1,<2.0.0)",
+    "langchain-anthropic (>=1.1.0,<2.0.0)"
+]
+
+[dependency-groups]
+dev = [
+    "pytest (>=9.0.3,<10.0.0)",
+    "pytest-asyncio (>=1.3.0,<2.0.0)",
+    "ruff (>=0.15.13,<0.16.0)",
+    "mypy (>=2.1.0,<3.0.0)",
+    "pre-commit (>=4.6.0,<5.0.0)"
+]
+
+[tool.poetry]
+packages = [{ include = "ai_taskflow", from = "src" }]
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+line-length = 88
+target-version = "py314"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "C90"]
+ignore = []
+
+[tool.mypy]
+python_version = "3.14"
+strict = true
+ignore_missing_imports = true
