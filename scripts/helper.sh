@@ -18,6 +18,7 @@ show_menu() {
   echo "6) poetry shell           # Activate Poetry shell"
   echo "7) poetry run <cmd>       # Run custom command"
   echo "8) Safe commit flow       # add + pre-commit + add + commit"
+  echo "9) Install/repair hooks   # pre-commit install --install-hooks"
   echo "0) Exit"
 }
 
@@ -43,6 +44,7 @@ while true; do
         git commit -m "$commit_msg"
       fi
       ;;
+    9) poetry run pre-commit install --install-hooks ;;
     0) echo "Exiting."; exit 0 ;;
     *) echo "Invalid option." ;;
   esac

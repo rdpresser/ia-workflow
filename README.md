@@ -96,6 +96,7 @@ It also includes a safe commit flow that runs:
 - `git commit -m "<message>"`
 
 Use menu option `8` in `./scripts/helper.sh` to execute this sequence automatically.
+Use menu option `9` in `./scripts/helper.sh` to install or repair Git hooks (`pre-commit install --install-hooks`).
 If you see `Permission denied`, ensure you have set the executable permission as above.
 
 Each command should be run from the project root. For more, see the [Poetry documentation](https://python-poetry.org/docs/).

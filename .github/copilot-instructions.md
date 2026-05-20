@@ -43,21 +43,21 @@ All suggestions should follow production-style patterns even though this is a Po
 
 Source code lives under `src/ai_taskflow/`. The main modules are:
 
-- `src/core/config.py` — typed settings via `pydantic-settings`.
-- `src/core/database.py` — async SQLAlchemy engine and session factory.
-- `src/core/security.py` — JWT helpers.
-- `src/models/` — SQLAlchemy ORM models.
-- `src/schemas/` — Pydantic request/response and AI output schemas.
-- `src/api/deps.py` — FastAPI dependency injection helpers.
-- `src/api/v1/` — versioned API endpoints (`auth.py`, `tasks.py`, `maintenance.py`).
-- `src/services/cache.py` — Redis-backed caching and rate limiting.
-- `src/services/publisher.py` — Pub/Sub event publishing.
-- `src/worker/` — background async task worker and LangChain AI engine.
+- `src/ai_taskflow/core/config.py` — typed settings via `pydantic-settings`.
+- `src/ai_taskflow/core/database.py` — async SQLAlchemy engine and session factory.
+- `src/ai_taskflow/core/security.py` — JWT helpers.
+- `src/ai_taskflow/models/` — SQLAlchemy ORM models.
+- `src/ai_taskflow/schemas/` — Pydantic request/response and AI output schemas.
+- `src/ai_taskflow/api/deps.py` — FastAPI dependency injection helpers.
+- `src/ai_taskflow/api/v1/` — versioned API endpoints (`auth.py`, `tasks.py`, `maintenance.py`).
+- `src/ai_taskflow/services/cache.py` — Redis-backed caching and rate limiting.
+- `src/ai_taskflow/services/publisher.py` — Pub/Sub event publishing.
+- `src/ai_taskflow/worker/` — background async task worker and LangChain AI engine.
 - `tests/` — pytest test files with `conftest.py` and `pytest-asyncio` fixtures.
 
 ## Code Patterns to Follow
 
-- Load all configuration through `src/core/config.py` using `pydantic-settings`. Never hardcode credentials or URLs.
+- Load all configuration through `src/ai_taskflow/core/config.py` using `pydantic-settings`. Never hardcode credentials or URLs.
 - Use SQLAlchemy `AsyncSession` with `async with` context managers. Never use sync sessions in async code.
 - Define Pydantic models for every API request body, response, and structured AI output.
 - Use FastAPI dependency injection (`Depends`) for database sessions, auth, and rate limiting.

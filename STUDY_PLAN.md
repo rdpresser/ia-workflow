@@ -121,33 +121,47 @@ ai-taskflow/
 ├── alembic.ini
 ├── migrations/
 ├── src/
-│   ├── __init__.py
-│   ├── core/
-│   │   ├── config.py
-│   │   ├── security.py
-│   │   └── database.py
-│   ├── models/
-│   │   └── task.py
-│   ├── schemas/
-│   │   ├── task.py
-│   │   └── ai.py
-│   ├── api/
-│   │   ├── deps.py
-│   │   └── v1/
-│   │       ├── auth.py
-│   │       ├── tasks.py
-│   │       └── maintenance.py
-│   ├── services/
-│   │   ├── cache.py
-│   │   └── publisher.py
-│   ├── worker/
-│   │   ├── main.py
-│   │   └── ai_engine.py
-│   └── main.py
+│   └── ai_taskflow/
+│       ├── __init__.py
+│       ├── core/
+│       │   ├── __init__.py
+│       │   ├── config.py
+│       │   ├── security.py
+│       │   └── database.py
+│       ├── models/
+│       │   └── task.py
+│       ├── schemas/
+│       │   ├── task.py
+│       │   └── ai.py
+│       ├── api/
+│       │   ├── deps.py
+│       │   └── v1/
+│       │       ├── auth.py
+│       │       ├── tasks.py
+│       │       └── maintenance.py
+│       ├── services/
+│       │   ├── cache.py
+│       │   └── publisher.py
+│       ├── worker/
+│       │   ├── main.py
+│       │   └── ai_engine.py
+│       └── main.py
 └── tests/
     ├── conftest.py
     ├── test_auth.py
     └── test_tasks.py
+```
+
+Current repository structure (after Phase 1 foundation):
+
+```text
+ai-taskflow/
+└── src/
+    └── ai_taskflow/
+        ├── __init__.py
+        └── core/
+            ├── __init__.py
+            └── config.py
 ```
 
 ## 5. The Main Business Flow
@@ -202,15 +216,15 @@ Purpose:
 
 Key tasks:
 
-- Implement typed application settings in `src/core/config.py`.
+- Implement typed application settings in `src/ai_taskflow/core/config.py`.
 - Use `pydantic-settings` to load environment variables safely and explicitly.
-- Configure the async SQLAlchemy engine and session factory in `src/core/database.py`.
+- Configure the async SQLAlchemy engine and session factory in `src/ai_taskflow/core/database.py`.
 - Use the `postgresql+asyncpg://` connection string for the async runtime path.
 - Initialize Alembic and create the first database migration.
-- Implement JWT encode and decode helpers in `src/core/security.py`.
-- Add FastAPI dependency helpers in `src/api/deps.py`.
-- Create task-related endpoints in `src/api/v1/tasks.py`.
-- Add Redis-backed rate limiting in `src/services/cache.py`.
+- Implement JWT encode and decode helpers in `src/ai_taskflow/core/security.py`.
+- Add FastAPI dependency helpers in `src/ai_taskflow/api/deps.py`.
+- Create task-related endpoints in `src/ai_taskflow/api/v1/tasks.py`.
+- Add Redis-backed rate limiting in `src/ai_taskflow/services/cache.py`.
 
 Request flow:
 
@@ -254,7 +268,7 @@ Key tasks:
 
 - Add the Google Cloud Pub/Sub emulator to `docker-compose.yml`.
 - Add local topic and subscription bootstrap scripts.
-- Implement a publisher service in `src/services/publisher.py`.
+- Implement a publisher service in `src/ai_taskflow/services/publisher.py`.
 - Publish the task ID after the database commit succeeds.
 - Keep the API response fast and avoid waiting for the LLM call.
 
@@ -293,13 +307,13 @@ Purpose:
 
 Key tasks:
 
-- Create the worker entry point in `src/worker/main.py`.
+- Create the worker entry point in `src/ai_taskflow/worker/main.py`.
 - Consume messages from the Pub/Sub subscription.
 - Load the task details from PostgreSQL.
-- Configure LangChain in `src/worker/ai_engine.py`.
+- Configure LangChain in `src/ai_taskflow/worker/ai_engine.py`.
 - Support both `ChatOpenAI` and `ChatAnthropic`.
 - Create prompt templates that adapt to the task type.
-- Define a Pydantic response contract for the AI output in `src/schemas/ai.py`.
+- Define a Pydantic response contract for the AI output in `src/ai_taskflow/schemas/ai.py`.
 - Enforce structured output with `with_structured_output()` so the worker writes predictable results.
 - Update the task status to `COMPLETED` after the AI response is saved.
 
@@ -342,9 +356,9 @@ Purpose:
 
 Key tasks:
 
-- Add a protected maintenance endpoint in `src/api/v1/maintenance.py`.
-- Create a Redis cleanup workflow in `src/services/cache.py` or a related service module.
-- Build a scheduler simulation helper in `src/services/scheduler_simulation.py`.
+- Add a protected maintenance endpoint in `src/ai_taskflow/api/v1/maintenance.py`.
+- Create a Redis cleanup workflow in `src/ai_taskflow/services/cache.py` or a related service module.
+- Build a scheduler simulation helper in `src/ai_taskflow/services/scheduler_simulation.py`.
 - Use Requests to call the maintenance endpoint as if Google Cloud Scheduler had triggered it.
 
 What the final result of this phase should look like:
