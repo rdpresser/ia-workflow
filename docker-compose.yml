@@ -1,12 +1,10 @@
-version: '3.8'
-
 services:
   postgres:
-    image: postgres:16-alpine
+    image: docker.io/library/postgres:16-alpine
     container_name: taskflow_postgres
     environment:
-      POSTGRES_USER: rdpresser
-      POSTGRES_PASSWORD: secret_password
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
       POSTGRES_DB: ai_taskflow_db
     ports:
       - "5432:5432"
@@ -14,7 +12,7 @@ services:
       - postgres_data:/var/lib/postgresql/data
 
   redis:
-    image: redis:7-alpine
+    image: docker.io/library/redis:7-alpine
     container_name: taskflow_redis
     ports:
       - "6379:6379"
