@@ -4,9 +4,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 # Shared config: all settings classes read from the same .env file.
 # pydantic-settings merges .env file values with actual environment variables,
 # with real env vars taking precedence over the .env file.
-_ENV_CONFIG = SettingsConfigDict(
-    env_file=".env", env_file_encoding="utf-8", extra="ignore"
-)
+_ENV_CONFIG = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="ignore")
 
 
 class DatabaseSettings(BaseSettings):
