@@ -16,6 +16,33 @@ This file is a practical command reference for database migrations in this proje
 - Explicit config file (useful when running from a different folder):
   - `poetry run alembic -c alembic.ini <command> [options]`
 
+## How `migrations/env.py` is executed
+
+Alembic always loads `migrations/env.py` for runtime commands. At the bottom of that file:
+
+- `run_migrations_offline()` is called when `context.is_offline_mode()` is `True`.
+- `run_migrations_online()` is called when `context.is_offline_mode()` is `False`.
+
+In practice:
+
+- Offline mode is used when you run commands with `--sql` (script generation only, no direct DB connection).
+  - Example: `poetry run alembic upgrade head --sql > migrations/full_upgrade.sql`
+  - Example: `poetry run alembic downgrade base --sql > migrations/full_downgrade.sql`
+
+- Online mode is used for normal runtime operations that talk to the database directly.
+  - Example: `poetry run alembic current`
+  - Example: `poetry run alembic upgrade head`
+  - Example: `poetry run alembic downgrade -1`
+  - Example: `poetry run alembic revision --autogenerate -m "..."`
+
+What `env.py` does in this project:
+
+- Loads application settings from `src/ai_taskflow/core/config.py`.
+- Builds the sync DB URL via `settings.db.sync_url`.
+- Overrides `sqlalchemy.url` from `alembic.ini` at runtime.
+- Exposes `target_metadata = Base.metadata` for autogenerate support.
+- Configures Alembic context and runs migrations in offline/online paths.
+
 ## 1) Create a new migration (autogenerate)
 
 - `poetry run alembic revision --autogenerate -m "<migration_name>"`
