@@ -152,16 +152,25 @@ ai-taskflow/
     └── test_tasks.py
 ```
 
-Current repository structure (after Phase 1 foundation):
+Current repository structure (as of Phase 2 — Security in progress):
 
 ```text
 ai-taskflow/
+├── alembic.ini
+├── migrations/
+├── pyproject.toml
 └── src/
     └── ai_taskflow/
         ├── __init__.py
-        └── core/
-            ├── __init__.py
-            └── config.py
+        ├── core/
+        │   ├── __init__.py
+        │   ├── config.py        ✅ done
+        │   ├── database.py      ✅ done
+        │   └── security.py      🔧 IN PROGRESS (current step)
+        ├── models/
+        │   └── task.py          ✅ done
+        └── schemas/
+            └── task.py          ✅ done
 ```
 
 ## 5. The Main Business Flow
@@ -214,6 +223,8 @@ This will be resolved in a future update to restore full pre-commit integration.
 
 ### Phase 2: API Core, Authentication, and Persistence
 
+Status: **In Progress** — currently working on the security layer (`core/security.py`).
+
 Purpose:
 
 - Build the actual application backbone.
@@ -222,15 +233,22 @@ Purpose:
 
 Key tasks:
 
-- Implement typed application settings in `src/ai_taskflow/core/config.py`.
-- Use `pydantic-settings` to load environment variables safely and explicitly.
-- Configure the async SQLAlchemy engine and session factory in `src/ai_taskflow/core/database.py`.
-- Use the `postgresql+asyncpg://` connection string for the async runtime path.
-- Initialize Alembic and create the first database migration.
-- Implement JWT encode and decode helpers in `src/ai_taskflow/core/security.py`.
-- Add FastAPI dependency helpers in `src/ai_taskflow/api/deps.py`.
-- Create task-related endpoints in `src/ai_taskflow/api/v1/tasks.py`.
-- Add Redis-backed rate limiting in `src/ai_taskflow/services/cache.py`.
+- ✅ Implement typed application settings in `src/ai_taskflow/core/config.py`.
+  Uses `pydantic-settings` to load environment variables safely with `SecretStr` for sensitive values.
+- ✅ Configure the async SQLAlchemy engine and session factory in `src/ai_taskflow/core/database.py`.
+  Uses the `postgresql+asyncpg://` connection string for the async runtime path.
+- ✅ Initialize Alembic and create the first database migration.
+  Resolved namespace detection issues with `src/` layout. Migrations run successfully against PostgreSQL.
+- ✅ Define the domain model in `src/ai_taskflow/models/task.py`.
+  Includes `TaskStatus` enum as an explicit state machine.
+- ✅ Define Data Transfer Objects in `src/ai_taskflow/schemas/task.py`.
+  Uses Pydantic v2 contracts.
+- 🔧 **[CURRENT STEP]** Implement JWT encode and decode helpers in `src/ai_taskflow/core/security.py`.
+  Will use `PyJWT` to issue and validate access tokens for protected endpoints.
+- ⬜ Add FastAPI dependency helpers in `src/ai_taskflow/api/deps.py`.
+  Will extract the Bearer token from the `Authorization` header and enforce authentication per route.
+- ⬜ Create task-related endpoints in `src/ai_taskflow/api/v1/tasks.py`.
+- ⬜ Add Redis-backed rate limiting in `src/ai_taskflow/services/cache.py`.
 
 Request flow:
 
